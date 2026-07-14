@@ -1477,7 +1477,7 @@
   }
 
   // =====================================================
-  // 8. RENDERIZADO DE PRODUCTOS (con filtros admin y nuevos campos)
+  // 8. RENDERIZADO DE PRODUCTOS (con filtros admin y nuevos campos, ocultos para clientes)
   // =====================================================
   function renderProducts(filter = '') {
     let list = isAdmin ? products : products.filter(p => p.stock > 0);
@@ -1527,9 +1527,10 @@
         priceHtml = `<span>$${formatPriceARS(p.price)}</span>`;
       }
       const categoryTag = p.category ? `<span class="category-tag">${escHtml(p.category)}</span>` : '';
-      // Nuevos tags
-      const ownershipTag = p.ownership === 'consignacion' ? `<span class="consign-tag">📦 Consignación</span>` : '';
-      const paymentTag = p.paymentStatus === 'partes' ? `<span class="payment-tag">💰 Partes</span>` : '';
+      // ===== NUEVOS TAGS: solo visibles para admin =====
+      const ownershipTag = (isAdmin && p.ownership === 'consignacion') ? `<span class="consign-tag">📦 Consignación</span>` : '';
+      const paymentTag = (isAdmin && p.paymentStatus === 'partes') ? `<span class="payment-tag">💰 Partes</span>` : '';
+      // ===== FIN =====
       let actionsHtml = '';
       if (isAdmin) {
         actionsHtml = `<div class="actions"><button class="lego-button small secondary" onclick="editProduct('${p.id}')">✏️ Editar</button><button class="lego-button small warning" onclick="sellProduct('${p.id}')">💰 Vender</button><button class="lego-button small success" onclick="returnProduct('${p.id}')">↩️ Devolver</button><button class="lego-button small" onclick="deleteProduct('${p.id}')">🗑️ Eliminar</button><button class="lego-button small" onclick="openDetail('${p.id}')">🔍 Ver</button></div>`;
@@ -2003,7 +2004,7 @@
   modal.addEventListener('click', function(e) { if (e.target === this) closeModalFn(); });
 
   // =====================================================
-  // 14. DETALLE (con nuevos campos)
+  // 14. DETALLE (con nuevos campos ocultos para clientes)
   // =====================================================
   window.openDetail = function(id) {
     const p = products.find(pr => pr.id === id);
@@ -2022,21 +2023,22 @@
       priceHtml = `<span>$${formatPriceARS(p.price)}</span>`;
     }
     const categoryTag = p.category ? `<div class="field"><span class="label">Categoría</span><span class="value">${escHtml(p.category)}</span></div>` : '';
-    // Nuevos campos en detalle
+    // ===== NUEVOS CAMPOS: solo visibles para admin =====
     let ownershipHtml = '';
-    if (p.ownership) {
+    if (isAdmin && p.ownership) {
       ownershipHtml = `<div class="field"><span class="label">Propiedad</span><span class="value">${p.ownership === 'consignacion' ? '📦 Consignación' : 'Propio'}</span></div>`;
     }
     let paymentHtml = '';
-    if (p.paymentStatus) {
+    if (isAdmin && p.paymentStatus) {
       paymentHtml = `<div class="field"><span class="label">Estado de pago</span><span class="value">${p.paymentStatus === 'completo' ? '✅ Completo' : '💰 En partes'}</span></div>`;
     }
     let consignHtml = '';
-    if (p.ownership === 'consignacion') {
+    if (isAdmin && p.ownership === 'consignacion') {
       consignHtml = `<div class="field"><span class="label">Fecha ingreso</span><span class="value">${p.fechaIngreso || '—'}</span></div>
                      <div class="field"><span class="label">Fecha venta</span><span class="value">${p.fechaVenta || '—'}</span></div>
                      <div class="field"><span class="label">WhatsApp cliente</span><span class="value">${p.clienteWhatsapp || '—'}</span></div>`;
     }
+    // ===== FIN =====
     let actionsHtml = '';
     if (isAdmin) {
       actionsHtml = `<div class="detail-actions"><button class="lego-button small secondary" onclick="editProduct('${p.id}'); closeDetailModal();">✏️ Editar</button><button class="lego-button small warning" onclick="sellProduct('${p.id}');">💰 Vender</button><button class="lego-button small success" onclick="returnProduct('${p.id}');">↩️ Devolver</button><button class="lego-button small" onclick="deleteProduct('${p.id}');">🗑️ Eliminar</button><button class="lego-button small whatsapp" onclick="clientWhatsApp('${p.id}');">📱 WhatsApp</button><button class="lego-button small secondary" onclick="closeDetailModal();">Cerrar</button></div>`;
