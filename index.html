@@ -886,6 +886,56 @@
       </div>
       <!-- ===== FIN NUEVA SECCIÓN ===== -->
 
+      <!-- ===== NUEVA SECCIÓN: AJUSTES DE IMAGEN Y CATÁLOGO ===== -->
+      <hr style="border-color:var(--border-color); margin: 16px 0;">
+      <h3 style="margin-bottom:12px;">📸 Ajustes de Imagen y Catálogo</h3>
+
+      <div class="form-group">
+        <div class="row">
+          <div>
+            <label>Ajuste de imagen</label>
+            <select id="imageFitSelect" class="lego-input">
+              <option value="cover">Cubrir (cover)</option>
+              <option value="contain">Contener (contain)</option>
+              <option value="fill">Rellenar (fill)</option>
+              <option value="none">Sin ajuste</option>
+              <option value="scale-down">Escalar hacia abajo</option>
+            </select>
+            <small style="color:var(--text-secondary);">Cómo se ajusta la imagen dentro del marco.</small>
+          </div>
+          <div>
+            <label>Posición de imagen</label>
+            <select id="imagePositionSelect" class="lego-input">
+              <option value="center">Centro</option>
+              <option value="top">Arriba</option>
+              <option value="bottom">Abajo</option>
+              <option value="left">Izquierda</option>
+              <option value="right">Derecha</option>
+              <option value="top left">Arriba izquierda</option>
+              <option value="top right">Arriba derecha</option>
+              <option value="bottom left">Abajo izquierda</option>
+              <option value="bottom right">Abajo derecha</option>
+            </select>
+            <small style="color:var(--text-secondary);">Alineación de la imagen dentro del marco.</small>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="row">
+          <div>
+            <label>Altura de imagen (px)</label>
+            <input type="number" id="imageHeightInput" class="lego-input" min="50" max="500" value="180">
+            <small style="color:var(--text-secondary);">Altura fija para la imagen en cada tarjeta.</small>
+          </div>
+          <div>
+            <label>Ancho mínimo de columna (px)</label>
+            <input type="number" id="gridMinWidthInput" class="lego-input" min="120" max="400" value="240">
+            <small style="color:var(--text-secondary);">A menor valor, más columnas (especialmente en móviles).</small>
+          </div>
+        </div>
+      </div>
+      <!-- ===== FIN NUEVA SECCIÓN ===== -->
+
       <!-- ===== NUEVA SECCIÓN: CATEGORÍAS DINÁMICAS ===== -->
       <hr style="border-color:var(--border-color); margin: 16px 0;">
       <h3 style="margin-bottom:12px;">📂 Administrar Categorías</h3>
@@ -1026,7 +1076,12 @@
     splashEnabled: false,
     splashUrl: '',
     splashDuration: 5,
-    // NUEVOS CAMPOS
+    // Nuevos campos de imagen y catálogo
+    imageFit: 'cover',
+    imagePosition: 'center',
+    imageHeight: 180,
+    gridMinColumnWidth: 240,
+    // Nuevos campos de animación
     backgroundImage: '',
     backgroundAnimation: 'none',
     buttonAnimation: 'none',
@@ -1137,7 +1192,12 @@
   const styleLogoAlign = document.getElementById('styleLogoAlign');
   const headerBgColorInput = document.getElementById('headerBgColorInput');
   const brandAlignInput = document.getElementById('brandAlignInput');
-  // Nuevos controles
+  // Nuevos controles de imagen y catálogo
+  const imageFitSelect = document.getElementById('imageFitSelect');
+  const imagePositionSelect = document.getElementById('imagePositionSelect');
+  const imageHeightInput = document.getElementById('imageHeightInput');
+  const gridMinWidthInput = document.getElementById('gridMinWidthInput');
+  // Nuevos controles de tema y animación
   const themeSelect = document.getElementById('themeSelect');
   const bgImageFile = document.getElementById('bgImageFile');
   const bgImageUrl = document.getElementById('bgImageUrl');
@@ -1212,6 +1272,10 @@
         if (!data.backgroundImage) data.backgroundImage = '';
         if (!data.backgroundAnimation) data.backgroundAnimation = 'none';
         if (!data.buttonAnimation) data.buttonAnimation = 'none';
+        if (!data.imageFit) data.imageFit = 'cover';
+        if (!data.imagePosition) data.imagePosition = 'center';
+        if (!data.imageHeight) data.imageHeight = 180;
+        if (!data.gridMinColumnWidth) data.gridMinColumnWidth = 240;
         business = data;
       } else {
         await businessRef.set(business);
@@ -1241,6 +1305,10 @@
         if (!bizData.backgroundImage) bizData.backgroundImage = '';
         if (!bizData.backgroundAnimation) bizData.backgroundAnimation = 'none';
         if (!bizData.buttonAnimation) bizData.buttonAnimation = 'none';
+        if (!bizData.imageFit) bizData.imageFit = 'cover';
+        if (!bizData.imagePosition) bizData.imagePosition = 'center';
+        if (!bizData.imageHeight) bizData.imageHeight = 180;
+        if (!bizData.gridMinColumnWidth) bizData.gridMinColumnWidth = 240;
         business = bizData;
         admin = JSON.parse(localAdmin);
         loadBusinessToUI();
@@ -1367,6 +1435,13 @@
     });
     if (btnAnimationSelect) btnAnimationSelect.value = business.buttonAnimation || 'none';
 
+    // ===== APLICAR AJUSTES DE IMAGEN Y CATÁLOGO =====
+    // Se aplican en renderProducts, pero sincronizamos los selects
+    if (imageFitSelect) imageFitSelect.value = business.imageFit || 'cover';
+    if (imagePositionSelect) imagePositionSelect.value = business.imagePosition || 'center';
+    if (imageHeightInput) imageHeightInput.value = business.imageHeight || 180;
+    if (gridMinWidthInput) gridMinWidthInput.value = business.gridMinColumnWidth || 240;
+
     // Sincronizar categorías
     populateCategoryDropdowns();
     renderCategoryList();
@@ -1429,7 +1504,13 @@
     if (headerBgColorInput) headerBgColorInput.value = business.headerBgColor || '#ffcc00';
     if (brandAlignInput) brandAlignInput.value = business.brandAlign || 'left';
 
-    // Nuevos campos
+    // Nuevos campos de imagen y catálogo
+    if (imageFitSelect) imageFitSelect.value = business.imageFit || 'cover';
+    if (imagePositionSelect) imagePositionSelect.value = business.imagePosition || 'center';
+    if (imageHeightInput) imageHeightInput.value = business.imageHeight || 180;
+    if (gridMinWidthInput) gridMinWidthInput.value = business.gridMinColumnWidth || 240;
+
+    // Nuevos campos de tema y animación
     if (themeSelect) themeSelect.value = business.theme || 'default';
     if (bgImageUrl) {
       bgImageUrl.value = business.backgroundImage || '';
@@ -1477,7 +1558,7 @@
   }
 
   // =====================================================
-  // 8. RENDERIZADO DE PRODUCTOS (con filtros admin y nuevos campos, ocultos para clientes)
+  // 8. RENDERIZADO DE PRODUCTOS (con ajustes de imagen y grid)
   // =====================================================
   function renderProducts(filter = '') {
     let list = isAdmin ? products : products.filter(p => p.stock > 0);
@@ -1504,6 +1585,10 @@
       }
     }
 
+    // Aplicar ancho de columna dinámico al grid
+    const minWidth = business.gridMinColumnWidth || 240;
+    grid.style.gridTemplateColumns = `repeat(auto-fill, minmax(${minWidth}px, 1fr))`;
+
     if (list.length === 0) {
       grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; background:var(--bg-card); border-radius:var(--lego-border-radius); border:3px dashed var(--border-color);">
         <p style="font-size:1.2rem; color:var(--text-secondary);">🧱 No hay productos disponibles en el catálogo.</p>
@@ -1511,12 +1596,19 @@
       return;
     }
 
+    // Obtener ajustes de imagen
+    const imgFit = business.imageFit || 'cover';
+    const imgPos = business.imagePosition || 'center';
+    const imgHeight = business.imageHeight || 180;
+
     grid.innerHTML = list.map(p => {
       const minStock = p.minStock !== undefined ? p.minStock : 5;
       let stockClass = 'ok', stockLabel = 'En stock';
       if (p.stock === 0) { stockClass = 'out'; stockLabel = 'Agotado'; }
       else if (p.stock <= minStock) { stockClass = 'low'; stockLabel = 'Pocas unidades'; }
-      const imgHtml = p.image ? `<img src="${p.image}" alt="${p.name}">` : `<div class="no-img">🧱<br>Sin imagen</div>`;
+      // Aplicar estilos a la imagen
+      const imgStyle = `height: ${imgHeight}px; object-fit: ${imgFit}; object-position: ${imgPos};`;
+      const imgHtml = p.image ? `<img src="${p.image}" alt="${p.name}" style="${imgStyle}">` : `<div class="no-img">🧱<br>Sin imagen</div>`;
       const offer = getOfferDisplay(p);
       let priceHtml = '';
       let offerFlag = '';
@@ -1537,7 +1629,7 @@
       } else {
         actionsHtml = `<div class="actions"><button class="lego-button whatsapp small" onclick="clientWhatsApp('${p.id}')">📱 Consultar</button><button class="lego-button small secondary" onclick="openDetail('${p.id}')">🔍 Ver</button></div>`;
       }
-      return `<div class="product-card" data-id="${p.id}"><div class="image">${imgHtml}${offerFlag}</div><div class="info"><div class="name">${escHtml(p.name)}</div><div class="code">${isAdmin ? 'Código: '+escHtml(p.code || '—')+' | Barras: '+escHtml(p.barcode || '—') : ''}</div>${categoryTag}${ownershipTag}${paymentTag}<div class="price">${priceHtml}</div><div class="stock"><span class="stock-badge ${stockClass}">${stockLabel}</span><span>${p.stock} unidades</span>${isAdmin && p.minStock !== undefined ? `<span style="font-size:0.65rem; color:var(--text-secondary);">(mín: ${p.minStock})</span>` : ''}</div></div>${actionsHtml}</div>`;
+      return `<div class="product-card" data-id="${p.id}"><div class="image" style="height:${imgHeight}px;">${imgHtml}${offerFlag}</div><div class="info"><div class="name">${escHtml(p.name)}</div><div class="code">${isAdmin ? 'Código: '+escHtml(p.code || '—')+' | Barras: '+escHtml(p.barcode || '—') : ''}</div>${categoryTag}${ownershipTag}${paymentTag}<div class="price">${priceHtml}</div><div class="stock"><span class="stock-badge ${stockClass}">${stockLabel}</span><span>${p.stock} unidades</span>${isAdmin && p.minStock !== undefined ? `<span style="font-size:0.65rem; color:var(--text-secondary);">(mín: ${p.minStock})</span>` : ''}</div></div>${actionsHtml}</div>`;
     }).join('');
 
     const catSelect = document.getElementById('adminCategorySelect');
@@ -1564,7 +1656,10 @@
     const top = matches.slice(0, 10);
     let html = '';
     top.forEach(p => {
-      const imgHtml = p.image ? `<img src="${p.image}" alt="${p.name}">` : `<span class="no-img">🧱</span>`;
+      const imgFit = business.imageFit || 'cover';
+      const imgPos = business.imagePosition || 'center';
+      const imgStyle = `object-fit: ${imgFit}; object-position: ${imgPos};`;
+      const imgHtml = p.image ? `<img src="${p.image}" alt="${p.name}" style="width:100%;height:100%;${imgStyle}">` : `<span class="no-img">🧱</span>`;
       const stockStatus = p.stock > 0 ? `Stock: ${p.stock}` : 'Agotado';
       const offer = getOfferDisplay(p);
       const priceDisplay = offer ? `$${formatPriceARS(offer.offer)}` : `$${formatPriceARS(p.price)}`;
@@ -2004,13 +2099,17 @@
   modal.addEventListener('click', function(e) { if (e.target === this) closeModalFn(); });
 
   // =====================================================
-  // 14. DETALLE (con nuevos campos ocultos para clientes)
+  // 14. DETALLE (con ajustes de imagen y nuevos campos)
   // =====================================================
   window.openDetail = function(id) {
     const p = products.find(pr => pr.id === id);
     if (!p) return;
     detailTitle.textContent = `🔍 ${p.name}`;
-    const imgHtml = p.image ? `<img src="${p.image}" alt="${p.name}">` : `<div class="no-img">🧱 Sin imagen</div>`;
+    // Aplicar ajustes de imagen al detalle
+    const imgFit = business.imageFit || 'cover';
+    const imgPos = business.imagePosition || 'center';
+    const imgStyle = `object-fit: ${imgFit}; object-position: ${imgPos}; max-height: 400px;`;
+    const imgHtml = p.image ? `<img src="${p.image}" alt="${p.name}" style="${imgStyle}">` : `<div class="no-img">🧱 Sin imagen</div>`;
     const minStock = p.minStock !== undefined ? p.minStock : 5;
     let stockClass = 'ok', stockLabel = 'En stock';
     if (p.stock === 0) { stockClass = 'out'; stockLabel = 'Agotado'; } else if (p.stock <= minStock) { stockClass = 'low'; stockLabel = 'Pocas unidades'; }
@@ -2045,7 +2144,7 @@
     } else {
       actionsHtml = `<div class="detail-actions"><button class="lego-button whatsapp small" onclick="clientWhatsApp('${p.id}');">📱 Consultar por WhatsApp</button><button class="lego-button small secondary" onclick="closeDetailModal();">Cerrar</button></div>`;
     }
-    detailContent.innerHTML = `<div class="detail-container"><div class="detail-image">${imgHtml}${offerFlag}</div><div class="detail-info"><div class="field"><span class="label">Nombre</span><span class="value">${escHtml(p.name)}</span></div>${isAdmin ? `<div class="field"><span class="label">Código</span><span class="value">${escHtml(p.code || '—')}</span></div>` : ''}${isAdmin ? `<div class="field"><span class="label">Código de barras</span><span class="value">${escHtml(p.barcode || '—')}</span></div>` : ''}${categoryTag}${ownershipHtml}${paymentHtml}${consignHtml}${isAdmin ? `<div class="field"><span class="label">Costo</span><span class="value">$${formatPriceARS(p.cost || 0)}</span></div>` : ''}<div class="field"><span class="label">Precio</span><span class="value">${priceHtml}</span></div><div class="field"><span class="label">Stock</span><span class="value">${p.stock} unidades <span class="stock-badge ${stockClass}">${stockLabel}</span>${isAdmin ? ` (mín: ${minStock})` : ''}</span></div><div class="field"><span class="label">Descripción</span><span class="value desc">${escHtml(p.description || 'Sin descripción')}</span></div>${actionsHtml}</div></div>`;
+    detailContent.innerHTML = `<div class="detail-container"><div class="detail-image" style="max-height:400px;">${imgHtml}${offerFlag}</div><div class="detail-info"><div class="field"><span class="label">Nombre</span><span class="value">${escHtml(p.name)}</span></div>${isAdmin ? `<div class="field"><span class="label">Código</span><span class="value">${escHtml(p.code || '—')}</span></div>` : ''}${isAdmin ? `<div class="field"><span class="label">Código de barras</span><span class="value">${escHtml(p.barcode || '—')}</span></div>` : ''}${categoryTag}${ownershipHtml}${paymentHtml}${consignHtml}${isAdmin ? `<div class="field"><span class="label">Costo</span><span class="value">$${formatPriceARS(p.cost || 0)}</span></div>` : ''}<div class="field"><span class="label">Precio</span><span class="value">${priceHtml}</span></div><div class="field"><span class="label">Stock</span><span class="value">${p.stock} unidades <span class="stock-badge ${stockClass}">${stockLabel}</span>${isAdmin ? ` (mín: ${minStock})` : ''}</span></div><div class="field"><span class="label">Descripción</span><span class="value desc">${escHtml(p.description || 'Sin descripción')}</span></div>${actionsHtml}</div></div>`;
     detailModal.classList.add('active');
   };
 
@@ -2137,7 +2236,7 @@
   loginModal.addEventListener('click', function(e) { if (e.target === this) closeLoginFn(); });
 
   // =====================================================
-  // 17. PANEL DE CONTROL (con nuevos campos)
+  // 17. PANEL DE CONTROL (con nuevos campos de imagen y catálogo)
   // =====================================================
   // Inyectar la sección de animación de inicio (splash) si no existe
   function injectSplashSettings() {
@@ -2803,7 +2902,12 @@
       splashEnabled: splashEnabledCheck ? splashEnabledCheck.checked : false,
       splashUrl: splashUrlInput ? splashUrlInput.value.trim() : '',
       splashDuration: splashDurationInput ? parseInt(splashDurationInput.value) || 5 : 5,
-      // Nuevos campos
+      // Nuevos campos de imagen y catálogo
+      imageFit: imageFitSelect ? imageFitSelect.value : 'cover',
+      imagePosition: imagePositionSelect ? imagePositionSelect.value : 'center',
+      imageHeight: parseInt(imageHeightInput.value) || 180,
+      gridMinColumnWidth: parseInt(gridMinWidthInput.value) || 240,
+      // Nuevos campos de tema y animación
       theme: themeSelect ? themeSelect.value : 'default',
       backgroundImage: bgImageUrl ? bgImageUrl.value.trim() : '',
       backgroundAnimation: bgAnimationSelect ? bgAnimationSelect.value : 'none',
