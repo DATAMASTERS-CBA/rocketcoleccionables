@@ -886,56 +886,6 @@
       </div>
       <!-- ===== FIN NUEVA SECCIÓN ===== -->
 
-      <!-- ===== NUEVA SECCIÓN: AJUSTES DE IMAGEN Y CATÁLOGO ===== -->
-      <hr style="border-color:var(--border-color); margin: 16px 0;">
-      <h3 style="margin-bottom:12px;">📸 Ajustes de Imagen y Catálogo</h3>
-
-      <div class="form-group">
-        <div class="row">
-          <div>
-            <label>Ajuste de imagen</label>
-            <select id="imageFitSelect" class="lego-input">
-              <option value="cover">Cubrir (cover)</option>
-              <option value="contain">Contener (contain)</option>
-              <option value="fill">Rellenar (fill)</option>
-              <option value="none">Sin ajuste</option>
-              <option value="scale-down">Escalar hacia abajo</option>
-            </select>
-            <small style="color:var(--text-secondary);">Cómo se ajusta la imagen dentro del marco.</small>
-          </div>
-          <div>
-            <label>Posición de imagen</label>
-            <select id="imagePositionSelect" class="lego-input">
-              <option value="center">Centro</option>
-              <option value="top">Arriba</option>
-              <option value="bottom">Abajo</option>
-              <option value="left">Izquierda</option>
-              <option value="right">Derecha</option>
-              <option value="top left">Arriba izquierda</option>
-              <option value="top right">Arriba derecha</option>
-              <option value="bottom left">Abajo izquierda</option>
-              <option value="bottom right">Abajo derecha</option>
-            </select>
-            <small style="color:var(--text-secondary);">Alineación de la imagen dentro del marco.</small>
-          </div>
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="row">
-          <div>
-            <label>Altura de imagen (px)</label>
-            <input type="number" id="imageHeightInput" class="lego-input" min="50" max="500" value="180">
-            <small style="color:var(--text-secondary);">Altura fija para la imagen en cada tarjeta.</small>
-          </div>
-          <div>
-            <label>Ancho mínimo de columna (px)</label>
-            <input type="number" id="gridMinWidthInput" class="lego-input" min="120" max="400" value="240">
-            <small style="color:var(--text-secondary);">A menor valor, más columnas (especialmente en móviles).</small>
-          </div>
-        </div>
-      </div>
-      <!-- ===== FIN NUEVA SECCIÓN ===== -->
-
       <!-- ===== NUEVA SECCIÓN: CATEGORÍAS DINÁMICAS ===== -->
       <hr style="border-color:var(--border-color); margin: 16px 0;">
       <h3 style="margin-bottom:12px;">📂 Administrar Categorías</h3>
@@ -1076,12 +1026,7 @@
     splashEnabled: false,
     splashUrl: '',
     splashDuration: 5,
-    // Nuevos campos de imagen y catálogo
-    imageFit: 'cover',
-    imagePosition: 'center',
-    imageHeight: 180,
-    gridMinColumnWidth: 240,
-    // Nuevos campos de animación
+    // NUEVOS CAMPOS
     backgroundImage: '',
     backgroundAnimation: 'none',
     buttonAnimation: 'none',
@@ -1192,12 +1137,7 @@
   const styleLogoAlign = document.getElementById('styleLogoAlign');
   const headerBgColorInput = document.getElementById('headerBgColorInput');
   const brandAlignInput = document.getElementById('brandAlignInput');
-  // Nuevos controles de imagen y catálogo
-  const imageFitSelect = document.getElementById('imageFitSelect');
-  const imagePositionSelect = document.getElementById('imagePositionSelect');
-  const imageHeightInput = document.getElementById('imageHeightInput');
-  const gridMinWidthInput = document.getElementById('gridMinWidthInput');
-  // Nuevos controles de tema y animación
+  // Nuevos controles
   const themeSelect = document.getElementById('themeSelect');
   const bgImageFile = document.getElementById('bgImageFile');
   const bgImageUrl = document.getElementById('bgImageUrl');
@@ -1272,10 +1212,6 @@
         if (!data.backgroundImage) data.backgroundImage = '';
         if (!data.backgroundAnimation) data.backgroundAnimation = 'none';
         if (!data.buttonAnimation) data.buttonAnimation = 'none';
-        if (!data.imageFit) data.imageFit = 'cover';
-        if (!data.imagePosition) data.imagePosition = 'center';
-        if (!data.imageHeight) data.imageHeight = 180;
-        if (!data.gridMinColumnWidth) data.gridMinColumnWidth = 240;
         business = data;
       } else {
         await businessRef.set(business);
@@ -1305,10 +1241,6 @@
         if (!bizData.backgroundImage) bizData.backgroundImage = '';
         if (!bizData.backgroundAnimation) bizData.backgroundAnimation = 'none';
         if (!bizData.buttonAnimation) bizData.buttonAnimation = 'none';
-        if (!bizData.imageFit) bizData.imageFit = 'cover';
-        if (!bizData.imagePosition) bizData.imagePosition = 'center';
-        if (!bizData.imageHeight) bizData.imageHeight = 180;
-        if (!bizData.gridMinColumnWidth) bizData.gridMinColumnWidth = 240;
         business = bizData;
         admin = JSON.parse(localAdmin);
         loadBusinessToUI();
@@ -1435,13 +1367,6 @@
     });
     if (btnAnimationSelect) btnAnimationSelect.value = business.buttonAnimation || 'none';
 
-    // ===== APLICAR AJUSTES DE IMAGEN Y CATÁLOGO =====
-    // Se aplican en renderProducts, pero sincronizamos los selects
-    if (imageFitSelect) imageFitSelect.value = business.imageFit || 'cover';
-    if (imagePositionSelect) imagePositionSelect.value = business.imagePosition || 'center';
-    if (imageHeightInput) imageHeightInput.value = business.imageHeight || 180;
-    if (gridMinWidthInput) gridMinWidthInput.value = business.gridMinColumnWidth || 240;
-
     // Sincronizar categorías
     populateCategoryDropdowns();
     renderCategoryList();
@@ -1504,13 +1429,7 @@
     if (headerBgColorInput) headerBgColorInput.value = business.headerBgColor || '#ffcc00';
     if (brandAlignInput) brandAlignInput.value = business.brandAlign || 'left';
 
-    // Nuevos campos de imagen y catálogo
-    if (imageFitSelect) imageFitSelect.value = business.imageFit || 'cover';
-    if (imagePositionSelect) imagePositionSelect.value = business.imagePosition || 'center';
-    if (imageHeightInput) imageHeightInput.value = business.imageHeight || 180;
-    if (gridMinWidthInput) gridMinWidthInput.value = business.gridMinColumnWidth || 240;
-
-    // Nuevos campos de tema y animación
+    // Nuevos campos
     if (themeSelect) themeSelect.value = business.theme || 'default';
     if (bgImageUrl) {
       bgImageUrl.value = business.backgroundImage || '';
@@ -1558,7 +1477,7 @@
   }
 
   // =====================================================
-  // 8. RENDERIZADO DE PRODUCTOS (con ajustes de imagen y grid)
+  // 8. RENDERIZADO DE PRODUCTOS (con ajustes de imagen individuales)
   // =====================================================
   function renderProducts(filter = '') {
     let list = isAdmin ? products : products.filter(p => p.stock > 0);
@@ -1585,10 +1504,6 @@
       }
     }
 
-    // Aplicar ancho de columna dinámico al grid
-    const minWidth = business.gridMinColumnWidth || 240;
-    grid.style.gridTemplateColumns = `repeat(auto-fill, minmax(${minWidth}px, 1fr))`;
-
     if (list.length === 0) {
       grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; background:var(--bg-card); border-radius:var(--lego-border-radius); border:3px dashed var(--border-color);">
         <p style="font-size:1.2rem; color:var(--text-secondary);">🧱 No hay productos disponibles en el catálogo.</p>
@@ -1596,18 +1511,23 @@
       return;
     }
 
-    // Obtener ajustes de imagen
-    const imgFit = business.imageFit || 'cover';
-    const imgPos = business.imagePosition || 'center';
-    const imgHeight = business.imageHeight || 180;
+    // Obtener ajustes de imagen individuales
+    const defaultHeight = business.imageHeight || 180;
+    const defaultFit = 'cover';
+    const defaultPosX = 50;
+    const defaultPosY = 50;
 
     grid.innerHTML = list.map(p => {
       const minStock = p.minStock !== undefined ? p.minStock : 5;
       let stockClass = 'ok', stockLabel = 'En stock';
       if (p.stock === 0) { stockClass = 'out'; stockLabel = 'Agotado'; }
       else if (p.stock <= minStock) { stockClass = 'low'; stockLabel = 'Pocas unidades'; }
-      // Aplicar estilos a la imagen
-      const imgStyle = `height: ${imgHeight}px; object-fit: ${imgFit}; object-position: ${imgPos};`;
+      // Obtener ajustes individuales o por defecto
+      const fit = p.imageFit || defaultFit;
+      const posX = p.imagePositionX !== undefined ? p.imagePositionX : defaultPosX;
+      const posY = p.imagePositionY !== undefined ? p.imagePositionY : defaultPosY;
+      const height = p.imageHeight || defaultHeight;
+      const imgStyle = `height: ${height}px; object-fit: ${fit}; object-position: ${posX}% ${posY}%;`;
       const imgHtml = p.image ? `<img src="${p.image}" alt="${p.name}" style="${imgStyle}">` : `<div class="no-img">🧱<br>Sin imagen</div>`;
       const offer = getOfferDisplay(p);
       let priceHtml = '';
@@ -1619,17 +1539,15 @@
         priceHtml = `<span>$${formatPriceARS(p.price)}</span>`;
       }
       const categoryTag = p.category ? `<span class="category-tag">${escHtml(p.category)}</span>` : '';
-      // ===== NUEVOS TAGS: solo visibles para admin =====
       const ownershipTag = (isAdmin && p.ownership === 'consignacion') ? `<span class="consign-tag">📦 Consignación</span>` : '';
       const paymentTag = (isAdmin && p.paymentStatus === 'partes') ? `<span class="payment-tag">💰 Partes</span>` : '';
-      // ===== FIN =====
       let actionsHtml = '';
       if (isAdmin) {
         actionsHtml = `<div class="actions"><button class="lego-button small secondary" onclick="editProduct('${p.id}')">✏️ Editar</button><button class="lego-button small warning" onclick="sellProduct('${p.id}')">💰 Vender</button><button class="lego-button small success" onclick="returnProduct('${p.id}')">↩️ Devolver</button><button class="lego-button small" onclick="deleteProduct('${p.id}')">🗑️ Eliminar</button><button class="lego-button small" onclick="openDetail('${p.id}')">🔍 Ver</button></div>`;
       } else {
         actionsHtml = `<div class="actions"><button class="lego-button whatsapp small" onclick="clientWhatsApp('${p.id}')">📱 Consultar</button><button class="lego-button small secondary" onclick="openDetail('${p.id}')">🔍 Ver</button></div>`;
       }
-      return `<div class="product-card" data-id="${p.id}"><div class="image" style="height:${imgHeight}px;">${imgHtml}${offerFlag}</div><div class="info"><div class="name">${escHtml(p.name)}</div><div class="code">${isAdmin ? 'Código: '+escHtml(p.code || '—')+' | Barras: '+escHtml(p.barcode || '—') : ''}</div>${categoryTag}${ownershipTag}${paymentTag}<div class="price">${priceHtml}</div><div class="stock"><span class="stock-badge ${stockClass}">${stockLabel}</span><span>${p.stock} unidades</span>${isAdmin && p.minStock !== undefined ? `<span style="font-size:0.65rem; color:var(--text-secondary);">(mín: ${p.minStock})</span>` : ''}</div></div>${actionsHtml}</div>`;
+      return `<div class="product-card" data-id="${p.id}"><div class="image" style="height:${height}px;">${imgHtml}${offerFlag}</div><div class="info"><div class="name">${escHtml(p.name)}</div><div class="code">${isAdmin ? 'Código: '+escHtml(p.code || '—')+' | Barras: '+escHtml(p.barcode || '—') : ''}</div>${categoryTag}${ownershipTag}${paymentTag}<div class="price">${priceHtml}</div><div class="stock"><span class="stock-badge ${stockClass}">${stockLabel}</span><span>${p.stock} unidades</span>${isAdmin && p.minStock !== undefined ? `<span style="font-size:0.65rem; color:var(--text-secondary);">(mín: ${p.minStock})</span>` : ''}</div></div>${actionsHtml}</div>`;
     }).join('');
 
     const catSelect = document.getElementById('adminCategorySelect');
@@ -1639,7 +1557,7 @@
   }
 
   // =====================================================
-  // 9. BUSCADOR Y SUGERENCIAS (con nuevos campos)
+  // 9. BUSCADOR Y SUGERENCIAS (con ajustes individuales)
   // =====================================================
   function updateSuggestions(query) {
     const trimmed = query.trim().toLowerCase();
@@ -1656,9 +1574,10 @@
     const top = matches.slice(0, 10);
     let html = '';
     top.forEach(p => {
-      const imgFit = business.imageFit || 'cover';
-      const imgPos = business.imagePosition || 'center';
-      const imgStyle = `object-fit: ${imgFit}; object-position: ${imgPos};`;
+      const fit = p.imageFit || 'cover';
+      const posX = p.imagePositionX !== undefined ? p.imagePositionX : 50;
+      const posY = p.imagePositionY !== undefined ? p.imagePositionY : 50;
+      const imgStyle = `object-fit: ${fit}; object-position: ${posX}% ${posY}%;`;
       const imgHtml = p.image ? `<img src="${p.image}" alt="${p.name}" style="width:100%;height:100%;${imgStyle}">` : `<span class="no-img">🧱</span>`;
       const stockStatus = p.stock > 0 ? `Stock: ${p.stock}` : 'Agotado';
       const offer = getOfferDisplay(p);
@@ -1722,7 +1641,6 @@
   // =====================================================
   function populateCategoryDropdowns() {
     const cats = business.categories || [];
-    // Dropdown de búsqueda
     const menu = document.getElementById('categoryMenu');
     menu.innerHTML = '';
     const allBtn = document.createElement('button');
@@ -1737,7 +1655,6 @@
       menu.appendChild(btn);
     });
 
-    // Dropdown del formulario de producto
     const prodCat = document.getElementById('prodCategory');
     prodCat.innerHTML = '';
     const emptyOpt = document.createElement('option');
@@ -1751,7 +1668,6 @@
       prodCat.appendChild(opt);
     });
 
-    // Dropdown de filtros admin
     const adminCatSelect = document.getElementById('adminCategorySelect');
     if (adminCatSelect) {
       adminCatSelect.innerHTML = '';
@@ -1768,7 +1684,6 @@
       adminCatSelect.value = currentCategoryFilter;
     }
 
-    // Actualizar resaltado
     highlightCategory(currentCategoryFilter);
   }
 
@@ -1801,7 +1716,7 @@
   }
 
   // =====================================================
-  // 11. CRUD DE PRODUCTOS (con nuevos campos)
+  // 11. CRUD DE PRODUCTOS (con campos de ajuste de imagen)
   // =====================================================
   async function saveProductsToFirestore(newProducts) {
     try { await productsRef.set({ list: newProducts }); localStorage.setItem('lego_products_backup', JSON.stringify(newProducts)); }
@@ -1822,13 +1737,17 @@
 
   async function addProduct(product) {
     product.id = Date.now().toString(36) + Math.random().toString(36).substr(2, 4);
-    // Asignar valores por defecto para nuevos campos si no existen
     if (!product.ownership) product.ownership = 'propio';
     if (!product.paymentStatus) product.paymentStatus = 'completo';
     if (product.ownership === 'consignacion') {
       if (!product.fechaIngreso) product.fechaIngreso = new Date().toISOString().split('T')[0];
       if (!product.clienteWhatsapp) product.clienteWhatsapp = '';
     }
+    // Asegurar campos de imagen
+    if (!product.imageFit) product.imageFit = 'cover';
+    if (product.imagePositionX === undefined) product.imagePositionX = 50;
+    if (product.imagePositionY === undefined) product.imagePositionY = 50;
+    if (!product.imageHeight) product.imageHeight = business.imageHeight || 180;
     products.push(product);
     try { await saveProductsToFirestore(products); renderProducts(searchInput.value); }
     catch (error) { products = products.filter(p => p.id !== product.id); }
@@ -1867,16 +1786,13 @@
     sales.push(sale);
     p.stock -= num;
 
-    // ===== NUEVA LÓGICA PARA CONSIGNACIÓN =====
     if (p.ownership === 'consignacion') {
       p.fechaVenta = new Date().toISOString().split('T')[0];
-      // Enviar aviso por WhatsApp al cliente si tiene número
       if (p.clienteWhatsapp) {
         const msg = `📦 *AVISO DE VENTA - RocketColeccionables*\n\nProducto: ${p.name}\nCantidad: ${num}\nFecha: ${new Date().toLocaleDateString()}\n\n✅ ¡Tu producto en consignación ha sido vendido!`;
         window.open(`https://wa.me/${p.clienteWhatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(msg)}`, '_blank');
       }
     }
-    // ===== FIN NUEVA LÓGICA =====
 
     try { await saveProductsToFirestore(products); await saveSalesToFirestore(sales); renderProducts(searchInput.value); alert(`✅ Venta realizada: ${num} unidad(es) de "${p.name}" por $${formatPriceARS(sale.total)}`); if (historyModal.classList.contains('active')) { renderInventory(); renderSales(); } closeDetailModal(); }
     catch (error) { sales = sales.filter(s => s.id !== sale.id); p.stock += num; }
@@ -1929,23 +1845,41 @@
     prodImageFile.value = '';
     prodImageUrl.value = p.image || '';
     if (p.image) { previewImg.src = p.image; imagePreview.style.display = 'block'; } else { imagePreview.style.display = 'none'; }
-    // Nuevos campos
     prodOwnership.value = p.ownership || 'propio';
     prodPaymentStatus.value = p.paymentStatus || 'completo';
     prodFechaIngreso.value = p.fechaIngreso || '';
     prodFechaVenta.value = p.fechaVenta || '';
     prodClienteWhatsapp.value = p.clienteWhatsapp || '';
-    // Mostrar/ocultar campos de consignación
     if (prodOwnership.value === 'consignacion') {
       consignFields.style.display = 'block';
     } else {
       consignFields.style.display = 'none';
     }
+
+    // Cargar ajustes de imagen individuales en los controles inyectados
+    const fitSelect = document.getElementById('prodImageFit');
+    const posXRange = document.getElementById('prodImagePosX');
+    const posYRange = document.getElementById('prodImagePosY');
+    const heightInput = document.getElementById('prodImageHeight');
+    const posXLabel = document.getElementById('prodPosXLabel');
+    const posYLabel = document.getElementById('prodPosYLabel');
+    if (fitSelect) fitSelect.value = p.imageFit || 'cover';
+    if (posXRange) {
+      const val = p.imagePositionX !== undefined ? p.imagePositionX : 50;
+      posXRange.value = val;
+      if (posXLabel) posXLabel.textContent = val + '%';
+    }
+    if (posYRange) {
+      const val = p.imagePositionY !== undefined ? p.imagePositionY : 50;
+      posYRange.value = val;
+      if (posYLabel) posYLabel.textContent = val + '%';
+    }
+    if (heightInput) heightInput.value = p.imageHeight || business.imageHeight || 180;
+
     modal.classList.add('active');
     closeDetailModal();
   };
 
-  // Mostrar/ocultar campos de consignación según selección
   prodOwnership.addEventListener('change', function() {
     if (this.value === 'consignacion') {
       consignFields.style.display = 'block';
@@ -1998,7 +1932,71 @@
   });
 
   // =====================================================
-  // 13. FORMULARIO PRODUCTO (con nuevos campos)
+  // 13. INYECTAR CONTROLES DE AJUSTE DE IMAGEN EN EL FORMULARIO DE PRODUCTO (con sliders)
+  // =====================================================
+  function injectImageAdjustControls() {
+    // Buscar el grupo de imagen para insertar después
+    const imageGroup = document.querySelector('#productModal .form-group:has(#prodImageUrl)');
+    if (!imageGroup) return;
+    // Verificar si ya se inyectaron
+    if (document.getElementById('prodImageFit')) return;
+
+    const ajustesDiv = document.createElement('div');
+    ajustesDiv.className = 'form-group';
+    ajustesDiv.innerHTML = `
+      <label>Ajustes de imagen (por producto)</label>
+      <div class="row">
+        <div>
+          <label>Ajuste (object-fit)</label>
+          <select id="prodImageFit" class="lego-input">
+            <option value="cover">Cubrir (cover)</option>
+            <option value="contain">Contener (contain)</option>
+            <option value="fill">Rellenar (fill)</option>
+            <option value="none">Sin ajuste</option>
+            <option value="scale-down">Escalar hacia abajo</option>
+          </select>
+        </div>
+        <div>
+          <label>Altura (px)</label>
+          <input type="number" id="prodImageHeight" class="lego-input" min="50" max="500" value="${business.imageHeight || 180}">
+        </div>
+      </div>
+      <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:8px;">
+        <div style="flex:1; min-width:120px;">
+          <label style="display:block; font-size:0.85rem;">Posición horizontal (X)</label>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <input type="range" id="prodImagePosX" min="0" max="100" value="50" style="flex:1;">
+            <span id="prodPosXLabel" style="min-width:40px; font-weight:600;">50%</span>
+          </div>
+        </div>
+        <div style="flex:1; min-width:120px;">
+          <label style="display:block; font-size:0.85rem;">Posición vertical (Y)</label>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <input type="range" id="prodImagePosY" min="0" max="100" value="50" style="flex:1;">
+            <span id="prodPosYLabel" style="min-width:40px; font-weight:600;">50%</span>
+          </div>
+        </div>
+      </div>
+      <small style="color:var(--text-secondary);">Desliza las barras para mover la imagen dentro del marco. Estos ajustes se guardan individualmente.</small>
+    `;
+    // Insertar después del grupo de imagen
+    imageGroup.parentNode.insertBefore(ajustesDiv, imageGroup.nextSibling);
+
+    // Actualizar etiquetas al mover los sliders
+    const posX = document.getElementById('prodImagePosX');
+    const posY = document.getElementById('prodImagePosY');
+    const labelX = document.getElementById('prodPosXLabel');
+    const labelY = document.getElementById('prodPosYLabel');
+    if (posX && labelX) {
+      posX.addEventListener('input', function() { labelX.textContent = this.value + '%'; });
+    }
+    if (posY && labelY) {
+      posY.addEventListener('input', function() { labelY.textContent = this.value + '%'; });
+    }
+  }
+
+  // =====================================================
+  // 14. FORMULARIO PRODUCTO (con campos de ajuste)
   // =====================================================
   function openProductForm(productData = null) {
     if (!isAdmin) return;
@@ -2030,6 +2028,25 @@
       } else {
         consignFields.style.display = 'none';
       }
+      // Cargar ajustes de imagen
+      const fitSelect = document.getElementById('prodImageFit');
+      const posXRange = document.getElementById('prodImagePosX');
+      const posYRange = document.getElementById('prodImagePosY');
+      const heightInput = document.getElementById('prodImageHeight');
+      const posXLabel = document.getElementById('prodPosXLabel');
+      const posYLabel = document.getElementById('prodPosYLabel');
+      if (fitSelect) fitSelect.value = productData.imageFit || 'cover';
+      if (posXRange) {
+        const val = productData.imagePositionX !== undefined ? productData.imagePositionX : 50;
+        posXRange.value = val;
+        if (posXLabel) posXLabel.textContent = val + '%';
+      }
+      if (posYRange) {
+        const val = productData.imagePositionY !== undefined ? productData.imagePositionY : 50;
+        posYRange.value = val;
+        if (posYLabel) posYLabel.textContent = val + '%';
+      }
+      if (heightInput) heightInput.value = productData.imageHeight || business.imageHeight || 180;
     } else {
       editingId = null;
       modalTitle.textContent = '➕ Agregar Producto';
@@ -2049,6 +2066,17 @@
       prodFechaVenta.value = '';
       prodClienteWhatsapp.value = '';
       consignFields.style.display = 'none';
+      // Valores por defecto para ajustes
+      const fitSelect = document.getElementById('prodImageFit');
+      const posXRange = document.getElementById('prodImagePosX');
+      const posYRange = document.getElementById('prodImagePosY');
+      const heightInput = document.getElementById('prodImageHeight');
+      const posXLabel = document.getElementById('prodPosXLabel');
+      const posYLabel = document.getElementById('prodPosYLabel');
+      if (fitSelect) fitSelect.value = 'cover';
+      if (posXRange) { posXRange.value = 50; if (posXLabel) posXLabel.textContent = '50%'; }
+      if (posYRange) { posYRange.value = 50; if (posYLabel) posYLabel.textContent = '50%'; }
+      if (heightInput) heightInput.value = business.imageHeight || 180;
     }
     modal.classList.add('active');
   }
@@ -2076,6 +2104,12 @@
     let fechaVenta = prodFechaVenta.value || '';
     let clienteWhatsapp = prodClienteWhatsapp.value.trim() || '';
 
+    // Recoger ajustes de imagen
+    const imageFit = document.getElementById('prodImageFit')?.value || 'cover';
+    const imagePositionX = parseInt(document.getElementById('prodImagePosX')?.value) || 50;
+    const imagePositionY = parseInt(document.getElementById('prodImagePosY')?.value) || 50;
+    const imageHeight = parseInt(document.getElementById('prodImageHeight')?.value) || business.imageHeight || 180;
+
     const data = {
       name, code: prodCode.value.trim(), barcode: prodBarcode.value.trim(),
       category, cost, price, stock, minStock, description,
@@ -2085,7 +2119,11 @@
       paymentStatus,
       fechaIngreso,
       fechaVenta,
-      clienteWhatsapp
+      clienteWhatsapp,
+      imageFit,
+      imagePositionX,
+      imagePositionY,
+      imageHeight
     };
 
     if (editingId) { await updateProduct(editingId, data); } else { await addProduct(data); }
@@ -2099,16 +2137,17 @@
   modal.addEventListener('click', function(e) { if (e.target === this) closeModalFn(); });
 
   // =====================================================
-  // 14. DETALLE (con ajustes de imagen y nuevos campos)
+  // 15. DETALLE (con ajustes individuales)
   // =====================================================
   window.openDetail = function(id) {
     const p = products.find(pr => pr.id === id);
     if (!p) return;
     detailTitle.textContent = `🔍 ${p.name}`;
-    // Aplicar ajustes de imagen al detalle
-    const imgFit = business.imageFit || 'cover';
-    const imgPos = business.imagePosition || 'center';
-    const imgStyle = `object-fit: ${imgFit}; object-position: ${imgPos}; max-height: 400px;`;
+    const fit = p.imageFit || 'cover';
+    const posX = p.imagePositionX !== undefined ? p.imagePositionX : 50;
+    const posY = p.imagePositionY !== undefined ? p.imagePositionY : 50;
+    const height = p.imageHeight || business.imageHeight || 180;
+    const imgStyle = `object-fit: ${fit}; object-position: ${posX}% ${posY}%; max-height: 400px;`;
     const imgHtml = p.image ? `<img src="${p.image}" alt="${p.name}" style="${imgStyle}">` : `<div class="no-img">🧱 Sin imagen</div>`;
     const minStock = p.minStock !== undefined ? p.minStock : 5;
     let stockClass = 'ok', stockLabel = 'En stock';
@@ -2122,7 +2161,6 @@
       priceHtml = `<span>$${formatPriceARS(p.price)}</span>`;
     }
     const categoryTag = p.category ? `<div class="field"><span class="label">Categoría</span><span class="value">${escHtml(p.category)}</span></div>` : '';
-    // ===== NUEVOS CAMPOS: solo visibles para admin =====
     let ownershipHtml = '';
     if (isAdmin && p.ownership) {
       ownershipHtml = `<div class="field"><span class="label">Propiedad</span><span class="value">${p.ownership === 'consignacion' ? '📦 Consignación' : 'Propio'}</span></div>`;
@@ -2137,14 +2175,13 @@
                      <div class="field"><span class="label">Fecha venta</span><span class="value">${p.fechaVenta || '—'}</span></div>
                      <div class="field"><span class="label">WhatsApp cliente</span><span class="value">${p.clienteWhatsapp || '—'}</span></div>`;
     }
-    // ===== FIN =====
     let actionsHtml = '';
     if (isAdmin) {
       actionsHtml = `<div class="detail-actions"><button class="lego-button small secondary" onclick="editProduct('${p.id}'); closeDetailModal();">✏️ Editar</button><button class="lego-button small warning" onclick="sellProduct('${p.id}');">💰 Vender</button><button class="lego-button small success" onclick="returnProduct('${p.id}');">↩️ Devolver</button><button class="lego-button small" onclick="deleteProduct('${p.id}');">🗑️ Eliminar</button><button class="lego-button small whatsapp" onclick="clientWhatsApp('${p.id}');">📱 WhatsApp</button><button class="lego-button small secondary" onclick="closeDetailModal();">Cerrar</button></div>`;
     } else {
       actionsHtml = `<div class="detail-actions"><button class="lego-button whatsapp small" onclick="clientWhatsApp('${p.id}');">📱 Consultar por WhatsApp</button><button class="lego-button small secondary" onclick="closeDetailModal();">Cerrar</button></div>`;
     }
-    detailContent.innerHTML = `<div class="detail-container"><div class="detail-image" style="max-height:400px;">${imgHtml}${offerFlag}</div><div class="detail-info"><div class="field"><span class="label">Nombre</span><span class="value">${escHtml(p.name)}</span></div>${isAdmin ? `<div class="field"><span class="label">Código</span><span class="value">${escHtml(p.code || '—')}</span></div>` : ''}${isAdmin ? `<div class="field"><span class="label">Código de barras</span><span class="value">${escHtml(p.barcode || '—')}</span></div>` : ''}${categoryTag}${ownershipHtml}${paymentHtml}${consignHtml}${isAdmin ? `<div class="field"><span class="label">Costo</span><span class="value">$${formatPriceARS(p.cost || 0)}</span></div>` : ''}<div class="field"><span class="label">Precio</span><span class="value">${priceHtml}</span></div><div class="field"><span class="label">Stock</span><span class="value">${p.stock} unidades <span class="stock-badge ${stockClass}">${stockLabel}</span>${isAdmin ? ` (mín: ${minStock})` : ''}</span></div><div class="field"><span class="label">Descripción</span><span class="value desc">${escHtml(p.description || 'Sin descripción')}</span></div>${actionsHtml}</div></div>`;
+    detailContent.innerHTML = `<div class="detail-container"><div class="detail-image" style="height:${height}px; max-height:400px;">${imgHtml}${offerFlag}</div><div class="detail-info"><div class="field"><span class="label">Nombre</span><span class="value">${escHtml(p.name)}</span></div>${isAdmin ? `<div class="field"><span class="label">Código</span><span class="value">${escHtml(p.code || '—')}</span></div>` : ''}${isAdmin ? `<div class="field"><span class="label">Código de barras</span><span class="value">${escHtml(p.barcode || '—')}</span></div>` : ''}${categoryTag}${ownershipHtml}${paymentHtml}${consignHtml}${isAdmin ? `<div class="field"><span class="label">Costo</span><span class="value">$${formatPriceARS(p.cost || 0)}</span></div>` : ''}<div class="field"><span class="label">Precio</span><span class="value">${priceHtml}</span></div><div class="field"><span class="label">Stock</span><span class="value">${p.stock} unidades <span class="stock-badge ${stockClass}">${stockLabel}</span>${isAdmin ? ` (mín: ${minStock})` : ''}</span></div><div class="field"><span class="label">Descripción</span><span class="value desc">${escHtml(p.description || 'Sin descripción')}</span></div>${actionsHtml}</div></div>`;
     detailModal.classList.add('active');
   };
 
@@ -2153,7 +2190,7 @@
   detailModal.addEventListener('click', function(e) { if (e.target === this) closeDetailModal(); });
 
   // =====================================================
-  // 15. WHATSAPP (sin cambios)
+  // 16. WHATSAPP (sin cambios)
   // =====================================================
   window.clientWhatsApp = function(productId) {
     const p = products.find(pr => pr.id === productId);
@@ -2167,7 +2204,7 @@
   };
 
   // =====================================================
-  // 16. ADMIN LOGIN / LOGOUT (sin cambios)
+  // 17. ADMIN LOGIN / LOGOUT
   // =====================================================
   function checkAdminSession() {
     const session = sessionStorage.getItem('lego_admin_session');
@@ -2236,14 +2273,12 @@
   loginModal.addEventListener('click', function(e) { if (e.target === this) closeLoginFn(); });
 
   // =====================================================
-  // 17. PANEL DE CONTROL (con nuevos campos de imagen y catálogo)
+  // 18. PANEL DE CONTROL
   // =====================================================
-  // Inyectar la sección de animación de inicio (splash) si no existe
   function injectSplashSettings() {
     const controlForm = document.getElementById('controlForm');
-    const hr = controlForm.querySelector('hr:last-of-type'); // el último hr antes de "Acceso Administrador"
+    const hr = controlForm.querySelector('hr:last-of-type');
     if (!hr) return;
-    // Verificar si ya está inyectado
     if (document.getElementById('splashEnabledCheck')) return;
     const splashHTML = `
       <hr style="border-color:var(--border-color); margin: 16px 0;">
@@ -2274,7 +2309,6 @@
     `;
     hr.insertAdjacentHTML('beforebegin', splashHTML);
 
-    // Manejar el input file para splash
     const splashFileInput = document.getElementById('splashFileInput');
     const splashUrlInput = document.getElementById('splashUrlInput');
     const splashPreview = document.getElementById('splashPreview');
@@ -2309,9 +2343,6 @@
     }
   }
 
-  // Inyectar los controles de categorías y animaciones ya están en el HTML
-  // Solo aseguramos que se llenen correctamente
-
   openControlBtn.addEventListener('click', function() {
     if (!isAdmin) return;
     loadBusinessToUI();
@@ -2323,7 +2354,6 @@
   closeControlBtn.addEventListener('click', closeControlFn);
   controlModal.addEventListener('click', function(e) { if (e.target === this) closeControlFn(); });
 
-  // Manejar imagen de fondo en panel de control
   bgImageFile.addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -2346,7 +2376,6 @@
     }
   });
 
-  // ===== ADMINISTRACIÓN DE CATEGORÍAS =====
   function renderCategoryList() {
     const container = document.getElementById('categoryList');
     if (!container) return;
@@ -2357,13 +2386,12 @@
       tag.className = 'cat-tag';
       const span = document.createElement('span');
       span.textContent = cat;
-      span.contentEditable = false; // para edición con doble clic
+      span.contentEditable = false;
       span.title = 'Doble clic para editar';
       span.addEventListener('dblclick', function() {
         const newName = prompt('Editar categoría:', cat);
         if (newName && newName.trim() !== '' && newName.trim() !== cat) {
           const trimmed = newName.trim();
-          // Verificar que no exista ya
           if (business.categories.includes(trimmed)) {
             alert('Ya existe una categoría con ese nombre.');
             return;
@@ -2414,7 +2442,7 @@
   });
 
   // =====================================================
-  // 18. TEMA GLOBAL (actualizado)
+  // 19. TEMA GLOBAL
   // =====================================================
   themeToggle.addEventListener('click', async function() {
     if (!isAdmin) return;
@@ -2435,7 +2463,7 @@
   });
 
   // =====================================================
-  // 19. BACKUP (sin cambios)
+  // 20. BACKUP
   // =====================================================
   document.getElementById('exportDbBtn').addEventListener('click', function() {
     if (!isAdmin) return;
@@ -2483,7 +2511,7 @@
   });
 
   // =====================================================
-  // 20. HISTORIAL (sin cambios)
+  // 21. HISTORIAL
   // =====================================================
   function renderInventory() {
     if (!isAdmin) return;
@@ -2568,7 +2596,7 @@
   clearSalesFilter.addEventListener('click', function() { if (!isAdmin) return; salesFilter = 'all'; salesDateFilter.value = ''; renderSales(); });
 
   // =====================================================
-  // 21. Sincronización en tiempo real
+  // 22. Sincronización en tiempo real
   // =====================================================
   let productListener = null, salesListener = null, businessListener = null, adminListener = null;
 
@@ -2601,7 +2629,7 @@
   }
 
   // =====================================================
-  // 22. RECONECTAR (sin alert de error)
+  // 23. RECONECTAR
   // =====================================================
   retryBtn.addEventListener('click', async function() {
     this.textContent = '⏳ Conectando...';
@@ -2613,7 +2641,7 @@
   });
 
   // =====================================================
-  // 23. BOTÓN FLOTANTE "VOLVER ARRIBA" (para clientes)
+  // 24. BOTÓN FLOTANTE "VOLVER ARRIBA"
   // =====================================================
   (function createBackToTop() {
     const style = document.createElement('style');
@@ -2694,7 +2722,7 @@
   })();
 
   // =====================================================
-  // 24. INYECCIÓN DE FILTROS ADMIN (con categorías dinámicas)
+  // 25. INYECCIÓN DE FILTROS ADMIN
   // =====================================================
   function injectAdminFilters() {
     const container = document.createElement('div');
@@ -2764,7 +2792,6 @@
     const grid = document.getElementById('productGrid');
     grid.parentNode.insertBefore(container, grid);
 
-    // Llenar categorías dinámicamente
     function populateAdminCatSelect() {
       const cats = business.categories || [];
       catSelect.innerHTML = '';
@@ -2782,7 +2809,6 @@
     }
     populateAdminCatSelect();
 
-    // Eventos
     catSelect.addEventListener('change', function() {
       const cat = this.value;
       currentCategoryFilter = cat;
@@ -2813,7 +2839,6 @@
       renderProducts(searchInput.value);
     });
 
-    // Exponer función para actualizar el select cuando cambien categorías
     window.updateAdminCatSelect = populateAdminCatSelect;
     if (isAdmin) {
       container.style.display = 'flex';
@@ -2821,7 +2846,7 @@
   }
 
   // =====================================================
-  // 25. SPLASH CONTROLADA (se muestra solo si está habilitada)
+  // 26. SPLASH CONTROLADA
   // =====================================================
   function showSplashIfNeeded() {
     if (!business.splashEnabled) return;
@@ -2862,7 +2887,7 @@
   }
 
   // =====================================================
-  // 26. GUARDAR CONFIGURACIÓN DEL PANEL DE CONTROL (actualizado)
+  // 27. GUARDAR CONFIGURACIÓN DEL PANEL DE CONTROL
   // =====================================================
   controlForm.addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -2902,17 +2927,13 @@
       splashEnabled: splashEnabledCheck ? splashEnabledCheck.checked : false,
       splashUrl: splashUrlInput ? splashUrlInput.value.trim() : '',
       splashDuration: splashDurationInput ? parseInt(splashDurationInput.value) || 5 : 5,
-      // Nuevos campos de imagen y catálogo
-      imageFit: imageFitSelect ? imageFitSelect.value : 'cover',
-      imagePosition: imagePositionSelect ? imagePositionSelect.value : 'center',
-      imageHeight: parseInt(imageHeightInput.value) || 180,
-      gridMinColumnWidth: parseInt(gridMinWidthInput.value) || 240,
-      // Nuevos campos de tema y animación
       theme: themeSelect ? themeSelect.value : 'default',
       backgroundImage: bgImageUrl ? bgImageUrl.value.trim() : '',
       backgroundAnimation: bgAnimationSelect ? bgAnimationSelect.value : 'none',
       buttonAnimation: btnAnimationSelect ? btnAnimationSelect.value : 'none',
-      categories: business.categories // mantenemos las categorías actuales
+      categories: business.categories,
+      // Ajustes globales de imagen (altura por defecto)
+      imageHeight: parseInt(document.getElementById('imageHeightInput')?.value) || 180
     };
 
     const newUser = adminUserInput.value.trim();
@@ -2932,11 +2953,11 @@
   });
 
   // =====================================================
-  // 27. INICIALIZACIÓN
+  // 28. INICIALIZACIÓN
   // =====================================================
   injectAdminFilters();
-  // Inyectar splash settings si no están
   injectSplashSettings();
+  injectImageAdjustControls(); // Inyectar controles de ajuste en el modal de producto
 
   loadAllData().then(() => {
     checkAdminSession();
@@ -2947,7 +2968,7 @@
     console.log('🔑 Credenciales por defecto: admin / admin123');
   }).catch(err => console.error('Error inicial:', err));
 
-  // Exponer funciones para que los botones onclick funcionen
+  // Exponer funciones para los botones onclick
   window.closeDetailModal = closeDetailModal;
   window.editProduct = editProduct;
   window.deleteProduct = deleteProduct;
@@ -2957,7 +2978,7 @@
   window.clientWhatsApp = clientWhatsApp;
   window.openDetail = openDetail;
 
-  console.log('✅ Todas las funcionalidades actualizadas: propiedad, consignación, pagos, categorías dinámicas, temas, animaciones y efectos.');
+  console.log('✅ Todas las funcionalidades actualizadas: ajuste de imagen con sliders por producto, propiedad, consignación, pagos, categorías dinámicas, temas, animaciones y efectos.');
 </script>
 </body>
 </html>
